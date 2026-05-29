@@ -8,9 +8,16 @@ import os
 
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "clave_super_secreta_cambiar_en_produccion")
+app.secret_key = os.environ.get("SECRET_KEY", "clave")
 
-CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
+from flask_cors import CORS
+
+# Configuración estricta y segura de CORS para producción
+CORS(app, supports_credentials=True, origins=[
+    "http://localhost:5173",                             # Para cuando programes local
+    "http://127.0.0.1:5173",
+    "https://tiendavirtual-frontend.vercel.app"          # 🌟 Tu URL real de Vercel sin la '/' al final
+])
 
 
 app.config["MAIL_SERVER"]   = os.environ.get("MAIL_SERVER",   "smtp.gmail.com")
